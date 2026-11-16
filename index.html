@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Website SMK Muhammadiyah Pakem</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* Mengatur agar halaman menggunakan sistem flexbox tinggi penuh (Sticky Footer) */
+        html, body {
+            height: 100%;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            background-color: #f8fafc;
+            font-family: Arial, sans-serif;
+        }
+
+        .content-wrapper {
+            flex: 1;
+        }
+
+        /* Mengatur tampilan header, logo, dan judul sekolah (Warna Biru Dongker / Navy Elegan) */
+        header {
+            background-color: #1e293b;
+            color: white;
+            padding: 20px;
+        }
+
+        .header-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 18px;
+            flex-wrap: wrap;
+        }
+
+        .header-logo {
+            width: 85px;
+            height: auto;
+            flex-shrink: 0;
+        }
+
+        .header-teks {
+            text-align: left;
+        }
+
+        .header-teks h1 {
+            margin: 0;
+            color: white;
+            font-size: 26px;
+        }
+
+        .header-teks p {
+            margin: 5px 0 0 0;
+            color: #94a3b8;
+            font-size: 15px;
+        }
+
+        /* Mengatur posisi dropdown di menu navigasi (Warna Biru Sedang & Aksen Emas Lembut) */
+        nav {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+            background-color: #334155;
+        }
+
+        nav > a {
+            color: white;
+            padding: 14px 16px;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        nav > a:hover {
+            background-color: #1e293b;
+        }
+
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .dropdown-btn {
+            display: inline-block;
+            color: white;
+            padding: 14px 16px;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .dropdown:hover .dropdown-btn {
+            background-color: #1e293b;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #b45309;
+            min-width: 190px;
+            box-shadow: 0px 8px 16px rgba(0,0,0,0.2);
+            z-index: 99;
+            top: 100%;
+            left: 0;
+        }
+
+        .dropdown-content a {
+            color: white;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+            text-align: left;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+        }
+
+        .dropdown-content a:hover {
+            background-color: #92400e;
+            color: white;
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        /* Sembunyikan semua halaman secara default, kecuali yang aktif */
+        .halaman {
+            display: none;
+            padding: 25px;
+            max-width: 1000px;
+            margin: 20px auto;
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+        }
+
+        .halaman.aktif {
+            display: block;
+        }
+
+        .halaman h2 {
+            color: #1e293b;
+            margin-top: 0;
+        }
+
+        /* Styling khusus Tampilan Sambutan Kepala Sekolah */
+        .sambutan-container {
+            display: flex;
+            align-items: center;
+            gap: 30px;
+            flex-wrap: wrap;
+            margin-bottom: 30px;
+            border-bottom: 1px solid #e2e8f0;
+            padding-bottom: 30px;
+        }
+
+        .sambutan-img {
+            width: 220px;
+            height: auto;
+            border-radius: 8px;
+            object-fit: cover;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+
+        .sambutan-teks {
+            flex: 1;
+            min-width: 280px;
+        }
+
+        .sambutan-teks h3 {
+            margin-top: 0;
+            color: #1e293b;
+        }
+
+        .sambutan-teks p {
+            color: #475569;
+            line-height: 1.6;
+        }
+
+        /* Styling Kartu Program Keahlian */
+        .jurusan-card {
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            background-color: #ffffff;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
+            border-left: 5px solid #334155;
+        }
+
+        .jurusan-card h3 {
+            margin-top: 0;
+            color: #1e293b;
+            font-size: 18px;
+            margin-bottom: 8px;
+        }
+
+        .jurusan-card p {
+            color: #475569;
+            margin: 0;
+            line-height: 1.5;
+        }
+
+        /* Styling Galeri Grid */
+        .galeri-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .galeri-item {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+
+        .galeri-item img {
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+            display: block;
+        }
+
+        /* Mengatur tampilan kotak-kotak berita */
+        .kartu-berita {
+            border: 1px solid #cbd5e1;
+            border-radius: 6px;
+            padding: 16px;
+            margin-bottom: 16px;
+            background-color: #ffffff;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+        }
+
+        .kartu-berita h3 {
+            margin-top: 0;
+            margin-bottom: 12px;
+            font-size: 16px;
+            color: #1e293b;
+            line-height: 1.4;
+        }
+
+        .kartu-berita small {
+            display: block;
+            border-top: 1px solid #e2e8f0;
+            padding-top: 8px;
+            color: #64748b;
+            font-size: 13px;
+        }
+
+        /* Footer selalu menempel di bawah */
+        footer {
+            text-align: center;
+            padding: 15px;
+            background-color: #1e293b;
+            color: white;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <div class="content-wrapper">
+        <header>
+            <div class="header-container">
+                <img src="images/logo.png" alt="Logo SMK Muhammadiyah Pakem" class="header-logo">
+                <div class="header-teks">
+                    <h1>SMK MUHAMMADIYAH PAKEM</h1>
+                    <p>Sekolah Unggul, Kreatif dan Berkemajuan</p>
+                </div>
+            </div>
+        </header>
+
+        <nav>
+            <a href="#beranda" onclick="bukaHalaman('beranda', event)">Beranda</a>
+            
+            <div class="dropdown">
+                <a href="#profil" onclick="bukaHalaman('profil', event)" class="dropdown-btn">Profile Sekolah &#9662;</a>
+                <div class="dropdown-content">
+                    <a href="#profil" onclick="bukaHalaman('profil', event)">Profile</a>
+                    <a href="#identitas" onclick="bukaHalaman('identitas', event)">Identitas Sekolah</a>
+                    <a href="#visi-misi" onclick="bukaHalaman('visi-misi', event)">Visi-Misi</a>
+                </div>
+            </div>
+
+            <a href="#jurusan" onclick="bukaHalaman('jurusan', event)">Program Keahlian</a>
+            <a href="#berita" onclick="bukaHalaman('berita', event)">Berita</a>
+            <a href="#galeri" onclick="bukaHalaman('galeri', event)">Galeri</a>
+            <a href="#kontak" onclick="bukaHalaman('kontak', event)">Kontak</a>
+        </nav>
+
+        <!-- Halaman 1: Beranda -->
+        <section id="beranda" class="halaman aktif">
+            <h2 style="text-align: center; margin-bottom: 25px;">Sambutan Kepala Sekolah</h2>
+            
+            <div class="sambutan-container">
+                <img src="images/kepala_sekolah.png" alt="Kepala Sekolah" class="sambutan-img">
+                <div class="sambutan-teks">
+                    <p><em>Assalamu'alaikum Wr. Wb</em></p>
+                    <p>Puji syukur selalu kita panjatkan kepada Allah SWT atas limpahan rohmat, hidayah, serta inayah-Nya kepada kita. Selamat datang di website resmi Pesantren Vokasi SMK Muhammadiyah Pakem. Sekolah yang mengusung konsep Pesantren Vokasi ini ingin memastikan...</p>
+                    <a href="#profil" onclick="bukaHalaman('profil', event)" style="color: #b45309; font-weight: bold; text-decoration: none;">Baca Selengkapnya &gt;&gt;</a>
+                </div>
+            </div>
+
+            <!-- Bagian Berita Terbaru di Beranda -->
+            <h2 style="margin-top: 30px; margin-bottom: 20px; border-top: 2px solid #e2e8f0; padding-top: 25px;">Berita Terbaru</h2>
+            
+            <article class="kartu-berita">
+                <h3>“Biar Nggak Cuma Jago Bengkel: Siswa XI TSM C Digembleng AI Digital Marketing bareng Ahass Kurnia Jaya!”</h3>
+                <small>12 November, 2026</small>
+            </article>
+
+            <article class="kartu-berita">
+                <h3>SMK Muhammadiyah Pakem Laksanakan Evaluasi dan Monitoring Sekolah Berbasis Budaya, Perkuat Pelestarian Budaya Daerah Istimewa Yogyakarta</h3>
+                <small>11 November, 2026</small>
+            </article>
+
+            <article class="kartu-berita">
+                <h3>Semarak Kirab Budaya SMK Muhammadiyah Pakem, Meriahkan Peringatan Hari Jadi ke-271 Daerah Istimewa Yogyakarta Tahun 2026</h3>
+                <small>10 November, 2026</small>
+            </article>
+        </section>
+
+        <!-- Halaman 2: Profile -->
+        <section id="profil" class="halaman">
+            <h2>Profil & Sejarah Singkat</h2>
+            <p>SMK Muhammadiyah Pakem terletak di Jalan Pakem-Turi KM 0,5 Pakembinangun, Pakem, Sleman, Yogyakarta, berdiri pada tahun 1973. Dengan letak yang strategis ini menjadikan peserta didik lebih mudah untuk menuju proses belajar dalam menuntut ilmu di Pesantren Vokasi SMK Muhammadiyah Pakem ini.</p>
+            <p>Pesantren Vokasi SMK Muhammadiyah Pakem didukung oleh civitas akademika yang terdiri dari 921 peserta didik, 53 pendidik yang berkompetensi tinggi serta capaian berbagai prestasi baik di tingkat kecamatan, kabupaten, maupun nasional semakin memantapkan SMK Muhammadiyah Pakem menyandang predikat sebagai SMK Pusat Keunggulan.</p>
+        </section>
+
+        <!-- Halaman 3: Identitas Sekolah -->
+        <section id="identitas" class="halaman">
+            <h2>Identitas Sekolah</h2>
+            <ul>
+                <li><strong>Nama Sekolah:</strong> SMK Muhammadiyah Pakem</li>
+                <li><strong>Tahun Berdiri:</strong> 1973</li>
+                <li><strong>Status:</strong> SMK Pusat Keunggulan (Pesantren Vokasi)</li>
+                <li><strong>Jumlah Peserta Didik:</strong> 921 Siswa</li>
+                <li><strong>Jumlah Pendidik:</strong> 53 Guru</li>
+                <li><strong>Alamat:</strong> Jl. Pakem-Turi Km 0,5 Pakembinangun, Pakem, Sleman, Yogyakarta</li>
+                <li><strong>Website:</strong> smkmuhpakem.sch.id</li>
+            </ul>
+        </section>
+
+        <!-- Halaman 4: Visi-Misi -->
+        <section id="visi-misi" class="halaman">
+            <h2>Visi & Misi</h2>
+            <h3>VISI</h3>
+            <ul>
+                <li>Terwujudnya Peserta Didik yang Bertakwa, Mandiri, dan Berprestasi Tingkat Global</li>
+            </ul>
+
+            <h3>MISI</h3>
+            <ul>
+                <li>Melaksanakan pendidikan berdasarkan nilai Islami</li>
+                <li>Mengembangkan kultur sekolah yang Islami</li>
+                <li>Mengembangkan IPTEK dan keterampilan hidup</li>
+                <li>Mengembangkan pendidikan sesuai dengan kebutuhan pasar kerja</li>
+                <li>Menanamkan jiwa mandiri dan wirausaha/entrepreneur</li>
+                <li>Mencetak lulusan yang kompeten</li>
+                <li>Mengembangkan kerjasama dengan perusahaan nasional dan internasional</li>
+            </ul>
+        </section>
+
+        <!-- Halaman 5: Program Keahlian -->
+        <section id="jurusan" class="halaman">
+            <h2>Program Keahlian</h2>
+            <p style="color: #64748b; margin-bottom: 25px;">Pilihan program keahlian unggulan di SMK Muhammadiyah Pakem yang dirancang sesuai dengan kebutuhan dunia industri dan kerja.</p>
+
+            <div class="jurusan-card">
+                <h3>Teknik Kendaraan Ringan (TKR)</h3>
+                <p>Jurusan yang mempelajari tentang perawatan dan perbaikan mesin otomotif, sasis, pemindah tenaga, serta sistem kelistrikan pada kendaraan mobil modern.</p>
+            </div>
+
+            <div class="jurusan-card">
+                <h3>Teknik Sepeda Motor (TSM)</h3>
+                <p>Jurusan yang fokus pada keterampilan perawatan, perbaikan mesin, sasis, serta sistem kelistrikan sepeda motor injeksi berstandar industri resmi.</p>
+            </div>
+
+            <div class="jurusan-card">
+                <h3>Desain Pemodelan dan Informasi Bangunan / Arsitek (DPIB)</h3>
+                <p>Jurusan yang mempelajari teknik perencanaan bangunan, pelaksanaan pembuatan gedung, perhitungan konstruksi, hingga penggunaan aplikasi desain arsitektur digital.</p>
+            </div>
+
+            <div class="jurusan-card">
+                <h3>Perbankan Syariah (PBS)</h3>
+                <p>Jurusan yang mempelajari bidang keuangan dan perbankan yang produk, pelayanan, serta sistem operasionalnya berlandaskan pada aturan dan hukum syariah Islam.</p>
+            </div>
+
+            <div class="jurusan-card">
+                <h3>Rekayasa Perangkat Lunak / Programmer (RPL)</h3>
+                <p>Jurusan yang mempelajari tentang pengembangan software komputer, pembuatan website, aplikasi mobile, game, serta penguasaan berbagai bahasa pemrograman komputer.</p>
+            </div>
+
+            <div class="jurusan-card">
+                <h3>Animasi</h3>
+                <p>Jurusan yang berfokus dalam mendalami teori dan teknik pembuatan animasi 2D dan 3D, film animasi, game, serta konten multimedia kreatif.</p>
+            </div>
+        </section>
+
+        <!-- Halaman 6: Berita -->
+        <section id="berita" class="halaman">
+            <h2>Semua Berita Terbaru</h2>
+            
+            <article class="kartu-berita">
+                <h3>“Biar Nggak Cuma Jago Bengkel: Siswa XI TSM C Digembleng AI Digital Marketing bareng Ahass Kurnia Jaya!”</h3>
+                <small>12 November, 2026</small>
+            </article>
+
+            <article class="kartu-berita">
+                <h3>SMK Muhammadiyah Pakem Laksanakan Evaluasi dan Monitoring Sekolah Berbasis Budaya, Perkuat Pelestarian Budaya Daerah Istimewa Yogyakarta</h3>
+                <small>11 November, 2026</small>
+            </article>
+
+            <article class="kartu-berita">
+                <h3>Semarak Kirab Budaya SMK Muhammadiyah Pakem, Meriahkan Peringatan Hari Jadi ke-271 Daerah Istimewa Yogyakarta Tahun 2026</h3>
+                <small>10 November, 2026</small>
+            </article>
+
+            <article class="kartu-berita">
+                <h3>Kunjungan Industri SMK Muhammadiyah Pakem 2026: Perluas Wawasan, Kenali Dunia Kerja, Siapkan Masa Depan</h3>
+                <small>27 October, 2026</small>
+            </article>
+
+            <article class="kartu-berita">
+                <h3>Pengumuman Kelulusan Tahun Pelajaran 2025/2026</h3>
+                <small>4 May, 2026</small>
+            </article>
+
+            <article class="kartu-berita">
+                <h3>Tingkatkan Daya Saing, Siswa SMK Muhammadiyah Pakem Ikuti Sertifikasi Kompetensi Tune Up Injeksi</h3>
+                <small>22 April, 2026</small>
+            </article>
+        </section>
+
+        <!-- Halaman 7: Galeri -->
+        <section id="galeri" class="halaman">
+            <h2>Galeri Kegiatan Sekolah</h2>
+            <p>Dokumentasi berbagai kegiatan dan aktivitas di lingkungan SMK Muhammadiyah Pakem.</p>
+            
+            <div class="galeri-grid">
+                <div class="galeri-item">
+                    <img src="images/fortasi.jpg" alt="FORTASI 2025">
+                </div>
+                <div class="galeri-item">
+                    <img src="images/kegiatan.jpeg" alt="Kegiatan 2">
+                </div>
+                <div class="galeri-item">
+                    <img src="images/kegiatan.jpg" alt="Kegiatan Sekolah">
+                </div>
+                <div class="galeri-item">
+                    <img src="images/kunjungan_sekertaris.jpeg" alt="Kunjungan Sekretaris PWM DIY">
+                </div>
+            </div>
+        </section>
+
+        <!-- Halaman 8: Kontak -->
+        <section id="kontak" class="halaman">
+            <h2>Kontak Sekolah</h2>
+            <p>Alamat: Jl. Pakem-Turi Km 0,5 Pakembinangun, Pakem, Sleman</p>
+            <p>Telepon: 085865611145</p>
+            <p>Website: <a href="https://smkmuhpakem.sch.id" target="_blank">smkmuhpakem.sch.id</a></p>
+        </section>
+    </div>
+
+    <footer>
+        <p>&copy; 2026 SMK Muhammadiyah Pakem</p>
+    </footer>
+
+    <!-- Script untuk berpindah-pindah halaman saat menu dipencet -->
+    <script>
+        function bukaHalaman(idHalaman, event) {
+            if (event) event.preventDefault();
+            
+            const semuaHalaman = document.querySelectorAll('.halaman');
+            semuaHalaman.forEach(function(halaman) {
+                halaman.classList.remove('aktif');
+            });
+
+            const target = document.getElementById(idHalaman);
+            if (target) {
+                target.classList.add('aktif');
+            }
+        }
+    </script>
+</body>
+</html>
